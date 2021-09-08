@@ -35,6 +35,8 @@ export default class VueRouter {
                 if (this.$options.router) {
                     // 挂载
                     _Vue.prototype.$router = this.$options.router;
+                    // 注册完之后初始化
+                    this.$options.router.init();
                 }
             },
         })
@@ -69,7 +71,7 @@ export default class VueRouter {
                         // 绑定事件
                         on: {
                             // 重新复写点击事件,不写的话会点击会向服务器发送请求刷新页面
-                            click: this.myClick,
+                            click: this.onClick,
                         },
                     },
                     // 这个是标签里面的内容 这里渲染是 默认插槽
@@ -104,7 +106,7 @@ export default class VueRouter {
     }
     // 实现前进后退
     initEvent() {
-        addEventListener('popstate', () => {
+        window.addEventListener('popstate', () => {
             // 当浏览器前进或后退时，触发
             this.data.current = window.location.pathname
         })
